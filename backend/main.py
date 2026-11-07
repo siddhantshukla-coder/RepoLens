@@ -19,11 +19,11 @@ from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-import auth
-import rag_engine
-import storage
-from doc_generator import build_retriever, generate_documentation, load_retriever
-from repo_analyzer import analyze_repo, parse_repo_url
+from backend import auth
+from backend import rag_engine
+from backend import storage
+from backend.doc_generator import build_retriever, generate_documentation, load_retriever
+from backend.repo_analyzer import analyze_repo, parse_repo_url
 
 app = FastAPI(title="RepoLens")
 auth.init_db()          

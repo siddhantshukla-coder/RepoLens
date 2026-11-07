@@ -5,8 +5,8 @@ from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-import rag_engine              # re-use YOUR llm + embedding model (loaded only once)
-from repo_analyzer import describe, describe_notebook
+from backend import rag_engine              # re-use YOUR llm + embedding model (loaded only once)
+from backend.repo_analyzer import describe, describe_notebook
 
 MAX_SRC_CHARS = 10000               # cap source sent per file (keeps us under token limits)
 

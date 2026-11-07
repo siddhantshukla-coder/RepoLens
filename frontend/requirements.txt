@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+pyjwt
+bcrypt
+requests
+langgraph
+langchain-core
+langchain-community
+langchain-groq
+langchain-huggingface
+langchain-text-splitters
+sentence-transformers
+faiss-cpu
+tree-sitter-language-pack

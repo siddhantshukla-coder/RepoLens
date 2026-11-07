@@ -1,0 +1,29 @@
+# RepoLens backend dependencies. Install inside a virtual environment:
+#   python -m venv .venv
+#   source .venv/bin/activate        (Windows: .venv\Scripts\activate)
+#   pip install -r requirements.txt
+
+# ---- web server + auth -------------------------------------------------
+fastapi
+uvicorn[standard]
+pydantic
+python-dotenv
+pyjwt                  # JWT creation / verification
+bcrypt                 # password hashing
+requests               # GitHub API calls
+
+# ---- self-RAG (LangGraph / LangChain) ----------------------------------
+langgraph
+langchain-core
+langchain-community    # FAISS vector store wrapper
+langchain-groq         # ChatGroq LLM
+langchain-huggingface  # HuggingFaceEmbeddings
+langchain-text-splitters
+sentence-transformers  # the all-MiniLM-L6-v2 embedding model
+faiss-cpu
+
+# ---- LangSmith tracing / observability ---------------------------------
+langsmith
+
+# ---- code analysis -----------------------------------------------------
+tree-sitter-language-pack

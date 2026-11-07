@@ -1,0 +1,18 @@
+# Virtual environment
+Include/
+Lib/
+Scripts/
+share/
+pyvenv.cfg
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Node dependencies
+node_modules/

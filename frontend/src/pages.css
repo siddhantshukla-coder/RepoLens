@@ -1,0 +1,82 @@
+/* pages.css  -  NEW in v1.1. Styles for the top navigation and the new sections
+   (My repos, Documentation, Profile). It is loaded AFTER styles.css, so a few rules
+   below intentionally override the old ones. styles.css itself was not touched. */
+
+/* ---------- top bar with navigation ---------- */
+.topbar{gap:16px;flex-wrap:wrap}
+a.brand{color:inherit;text-decoration:none}
+.nav{display:flex;gap:4px;flex-wrap:wrap}
+.navlink{color:var(--mute);text-decoration:none;padding:8px 14px;border-radius:999px;font-size:14px;font-weight:500;transition:color .12s,background .12s}
+.navlink:hover{color:var(--ice)}
+.navlink.on{color:var(--ice);background:var(--glass2);box-shadow:inset 0 0 0 1px var(--edge)}
+.whoami{display:flex;align-items:center;gap:10px;color:var(--ice);text-decoration:none}
+.avatar{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:700 12px var(--display);color:#03101a;background:linear-gradient(135deg,var(--cyan),var(--violet))}
+.who .avatar{display:grid}   /* styles.css hides .who span on phones; keep the avatar visible */
+
+/* ---------- small shared bits ---------- */
+.muted{color:var(--mute)}
+.pad{padding:18px}
+.ok{color:#6ee7b7;font-size:14px;margin:0}
+.bad-text{color:var(--bad)!important}
+a.subtle{color:var(--mute)}
+.center p a{color:var(--cyan)}
+.row-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn.danger{border-color:var(--bad);color:var(--bad);background:transparent;box-shadow:none}
+.btn.ghost.danger:hover{background:rgba(255,122,138,.1);border-color:var(--bad)}
+
+/* ---------- generic page (My repos, Profile) ---------- */
+.page{max-width:1080px;margin:0 auto;padding:32px 24px 56px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:8px}
+.page-head h1{font-size:2rem;font-weight:800;letter-spacing:-.02em}
+.page-head p{margin:4px 0 0;color:var(--mute)}
+.section-title{font:600 .95rem "Instrument Sans",sans-serif;color:var(--cyan);margin:28px 0 12px}
+
+/* repo cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.rcard{display:flex;flex-direction:column;gap:10px;background:var(--glass);border:1px solid var(--edge);border-radius:16px;padding:18px;transition:border-color .15s}
+.rcard:hover{border-color:rgba(85,216,255,.45)}
+.rcard h3{margin:0;font:800 1.1rem var(--display);overflow-wrap:anywhere}
+.rcard .meta{margin:0;color:var(--mute);font-size:13px;overflow-wrap:anywhere}
+.rcard .meta a{color:var(--mute)}
+.rcard .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+.rcard .btn{padding:9px 16px;font-size:14px}
+.rcard.running{border-style:dashed;border-color:rgba(138,125,255,.55)}
+.rcard.failed{border-color:rgba(255,122,138,.45)}
+.bar.wide{width:100%}
+.empty{display:grid;justify-items:start;gap:12px;padding:28px;border:1px dashed var(--edge);border-radius:16px;color:var(--mute)}
+.empty p{margin:0}
+
+/* ---------- Documentation: list + viewer ---------- */
+.docs{display:grid;grid-template-columns:300px minmax(0,1fr);gap:16px;padding:16px 24px 24px;height:calc(100vh - 57px)}
+.doclist{overflow:auto;display:flex;flex-direction:column;gap:4px;padding:8px;background:var(--glass);border:1px solid var(--edge);border-radius:18px}
+.docitem{display:block;padding:12px 14px;border-radius:12px;color:var(--ice);text-decoration:none;border:1px solid transparent}
+.docitem:hover{background:var(--glass2)}
+.docitem.on{background:var(--glass2);border-color:var(--edge);box-shadow:inset 3px 0 0 var(--cyan)}
+.docitem b{display:block;font-weight:600;overflow-wrap:anywhere}
+.docitem small{color:var(--mute)}
+
+/* ---------- Profile ---------- */
+.profile{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:20px;align-items:start;margin-top:16px}
+.pcard{background:var(--glass);border:1px solid var(--edge);border-radius:18px;padding:22px}
+.pcard h2{font-size:1.15rem;font-weight:800}
+.identity{text-align:center;display:grid;gap:4px;justify-items:center}
+.identity h2{font-size:1.4rem;margin-top:8px;overflow-wrap:anywhere}
+.identity p{margin:0;overflow-wrap:anywhere}
+.bigavatar{width:88px;height:88px;border-radius:50%;display:grid;place-items:center;font:800 1.9rem var(--display);color:#03101a;background:linear-gradient(135deg,var(--cyan),var(--violet));box-shadow:0 0 40px rgba(85,216,255,.3)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-top:16px}
+.stat{background:var(--glass2);border:1px solid var(--edge);border-radius:12px;padding:12px}
+.stat b{display:block;font:800 1.6rem var(--display)}
+.stat span{color:var(--mute);font-size:13px}
+.stack-col{display:grid;gap:16px}
+.stack{display:grid;gap:12px}
+.stack p{margin:0}
+label.field{display:grid;gap:6px;font-size:13px;color:var(--mute)}
+.danger-zone{border-color:rgba(255,122,138,.4)}
+
+@media (max-width:900px){
+ .docs{grid-template-columns:1fr;height:auto;padding:12px}
+ .doclist{max-height:220px}
+ .docs .panel{min-height:70vh}
+ .profile{grid-template-columns:1fr}
+ .page{padding:20px 14px 40px}
+}

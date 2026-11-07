@@ -1,0 +1,111 @@
+/* ---------- Design tokens: deep ink, glass panels, cyan + violet light ---------- */
+:root{--ink:#050811;--glass:#0b1222;--glass2:#101b33;--edge:#1a2a4a;--ice:#dce9ff;--mute:#7d8db3;
+--cyan:#55d8ff;--violet:#8a7dff;--bad:#ff7a8a;--display:"Bricolage Grotesque",system-ui,sans-serif;--mono:"JetBrains Mono",monospace}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--ink);color:var(--ice);font:16px/1.55 "Instrument Sans",system-ui,sans-serif}
+/* faint optical grid + two soft light leaks behind everything */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+radial-gradient(60vmax 60vmax at 85% -10%,rgba(85,216,255,.11),transparent 60%),
+radial-gradient(50vmax 50vmax at -10% 110%,rgba(138,125,255,.13),transparent 60%),
+linear-gradient(rgba(85,216,255,.035) 1px,transparent 1px) 0 0/48px 48px,
+linear-gradient(90deg,rgba(85,216,255,.035) 1px,transparent 1px) 0 0/48px 48px}
+:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
+h1,h2{font-family:var(--display);margin:0}
+
+/* ---------- top bar ---------- */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-bottom:1px solid var(--edge);background:rgba(5,8,17,.72);backdrop-filter:blur(8px);position:sticky;top:0;z-index:5}
+.brand{display:flex;align-items:center;gap:10px;font:800 20px var(--display);letter-spacing:-.01em}
+.brand svg{width:26px;height:26px}
+.who{display:flex;align-items:center;gap:14px;color:var(--mute);font-size:14px}
+
+/* ---------- shared controls ---------- */
+.btn{border:0;border-radius:999px;padding:12px 22px;font:600 15px "Instrument Sans",sans-serif;cursor:pointer;color:#03101a;background:linear-gradient(135deg,var(--cyan),#86eaff);box-shadow:0 0 26px rgba(85,216,255,.28);transition:transform .12s,box-shadow .12s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 0 36px rgba(85,216,255,.45)}
+.btn:disabled{opacity:.5;cursor:wait;transform:none}
+.btn.ghost{background:transparent;color:var(--ice);border:1px solid var(--edge);box-shadow:none;padding:8px 16px;font-size:14px}
+.btn.ghost:hover{border-color:var(--cyan)}
+input{width:100%;background:var(--glass);border:1px solid var(--edge);color:var(--ice);border-radius:10px;padding:13px 14px;font:inherit}
+input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(85,216,255,.15)}
+::placeholder{color:#55658a}
+.err{min-height:1.5em;color:var(--bad)!important;font-size:14px;margin:8px 0 0}
+
+/* ---------- full-screen centred views (auth, repo, scan) ---------- */
+.center{min-height:100vh;display:grid;place-content:center;justify-items:center;gap:18px;padding:32px 20px;text-align:center}
+.with-bar .center{min-height:calc(100vh - 57px)}
+.center h1{font-size:clamp(2rem,5vw,3.3rem);font-weight:800;letter-spacing:-.025em;line-height:1.05;max-width:16ch}
+.center p{margin:0;color:var(--mute);max-width:46ch}
+.lens{width:var(--s,180px);height:var(--s,180px);animation:focus .9s cubic-bezier(.2,.7,.2,1) both}
+/* the lens "comes into focus" whenever a screen appears */
+@keyframes focus{from{filter:blur(12px);opacity:0;transform:scale(1.14)}to{filter:none;opacity:1;transform:none}}
+
+/* auth card */
+.card{width:min(380px,100%);text-align:left;display:grid;gap:12px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--glass);border:1px solid var(--edge);border-radius:999px;padding:4px}
+.tab{border:0;background:none;color:var(--mute);font:500 14px "Instrument Sans";padding:9px;border-radius:999px;cursor:pointer}
+.tab.on{background:var(--glass2);color:var(--ice)}
+
+/* the search bar is shaped like a lens barrel */
+.search{display:flex;gap:8px;width:min(660px,100%);padding:8px;border:1px solid var(--edge);border-radius:999px;background:var(--glass);box-shadow:0 0 70px rgba(85,216,255,.09)}
+.search input{border:0;background:transparent;padding:10px 6px 10px 18px;box-shadow:none}
+.search input:focus{box-shadow:none}
+.search:focus-within{border-color:var(--cyan)}
+
+/* scanner: a light arc sweeps round the lens while the backend works */
+.scan{position:relative;width:min(280px,70vw);aspect-ratio:1}
+.scan .lens{width:100%;height:100%}
+.sweep{position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 72%,rgba(85,216,255,.85));
+-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3px));mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3px));animation:spin 1.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pct{position:absolute;inset:0;display:grid;place-items:center;font:800 clamp(2.4rem,9vw,3.4rem) var(--display)}
+.center h1.scan-title{font-size:1.8rem;max-width:30ch;overflow-wrap:anywhere}
+.bar{width:min(420px,80vw);height:4px;border-radius:4px;background:var(--glass2);overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--violet),var(--cyan));transition:width .6s}
+.scan-msg{min-height:1.6em;overflow-wrap:anywhere}
+
+/* ---------- workspace: docs on the left, chatbot on the right ---------- */
+.work{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px;padding:16px 24px 24px;height:calc(100vh - 57px)}
+.panel{display:flex;flex-direction:column;min-height:0;background:var(--glass);border:1px solid var(--edge);border-radius:18px}
+.ph{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--edge)}
+.ph h2{font-size:18px;font-weight:800;overflow-wrap:anywhere}
+.ph small{display:block;color:var(--mute);font:400 13px "Instrument Sans";margin-top:2px}
+.acts{display:flex;gap:8px;flex-shrink:0}
+.doc{overflow:auto;padding:6px 28px 28px;flex:1;min-height:0}
+
+/* rendered Markdown (used by the docs and by bot answers) */
+.md{line-height:1.65;overflow-wrap:anywhere}
+.md h1{font-size:1.9rem;letter-spacing:-.02em;margin:1.1em 0 .4em}
+.md h2{font-size:1.3rem;margin:2.2em 0 .5em;padding-top:1em;border-top:1px solid var(--edge)}
+.md h3{font:600 1.02rem "Instrument Sans";color:var(--cyan);margin:1.5em 0 .3em}
+.md p,.md ul,.md ol{margin:.6em 0}
+.md code{font-family:var(--mono);font-size:.86em;background:#0d1a33;color:#9fe6ff;padding:.12em .38em;border-radius:5px}
+.md pre{background:#070d1b;border:1px solid var(--edge);border-radius:10px;padding:14px;overflow:auto}
+.md pre code{background:none;padding:0;color:var(--ice)}
+.md table{border-collapse:collapse;display:block;overflow:auto}
+.md td,.md th{border:1px solid var(--edge);padding:6px 10px}
+.md a{color:var(--cyan)}
+.md hr{border:0;border-top:1px solid var(--edge)}
+
+/* chat */
+.log{flex:1;min-height:0;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:14px}
+.msg{max-width:94%;padding:11px 15px;border-radius:16px}
+.msg.user{align-self:flex-end;background:linear-gradient(135deg,rgba(85,216,255,.17),rgba(138,125,255,.2));border:1px solid rgba(85,216,255,.3);border-bottom-right-radius:4px;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.bot{align-self:flex-start;background:var(--glass2);border:1px solid var(--edge);border-bottom-left-radius:4px}
+.msg.bot>:first-child{margin-top:0}.msg.bot>:last-child{margin-bottom:0}
+.msg.bad{border-color:var(--bad);color:var(--bad)}
+.dots{display:inline-flex;gap:4px;margin-right:8px;vertical-align:middle}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:blink 1s infinite}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes blink{0%,100%{opacity:.25}50%{opacity:1}}
+.chips{display:flex;flex-wrap:wrap;gap:8px;padding:0 14px 10px}
+.chip{border:1px solid var(--edge);background:none;color:var(--mute);border-radius:999px;padding:6px 12px;font:400 13px "Instrument Sans";cursor:pointer}
+.chip:hover:not(:disabled){color:var(--ice);border-color:var(--cyan)}
+.chip:disabled{opacity:.5;cursor:wait}
+.composer{display:flex;gap:8px;padding:12px;border-top:1px solid var(--edge)}
+.composer input{border-radius:999px;padding-left:18px}
+
+@media (max-width:900px){
+ .work{grid-template-columns:1fr;height:auto;padding:12px}
+ .doc{max-height:70vh}.log{max-height:60vh;min-height:40vh}
+ .topbar{padding:10px 14px}.who span{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

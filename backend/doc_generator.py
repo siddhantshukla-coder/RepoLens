@@ -5,8 +5,8 @@ from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from backend import rag_engine              # re-use YOUR llm + embedding model (loaded only once)
-from backend.repo_analyzer import describe, describe_notebook
+import rag_engine              # re-use YOUR llm + embedding model (loaded only once)
+from repo_analyzer import describe, describe_notebook
 
 MAX_SRC_CHARS = 10000               # cap source sent per file (keeps us under token limits)
 
@@ -113,8 +113,6 @@ def generate_documentation(repo: dict, progress) -> dict:
         if len(f["source"]) > MAX_SRC_CHARS:
             src += "\n... [file truncated]"
         if f.get("notebook"):
-            # v1.3: a Jupyter notebook gets its own prompt plus the notebook statistics, so its
-            # section is an ANALYSIS (workflow, data, models, results, reproducibility)
             human = (
                 f"File: {f['path']} (Jupyter notebook)\n\n"
                 f"## Notebook statistics\n{describe_notebook(f['notebook'])}\n\n"

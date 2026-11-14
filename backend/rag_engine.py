@@ -6,7 +6,7 @@ from typing import TypedDict, Annotated, Literal
 from langchain_core.documents import Document
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.embeddings.fastembed import FastEmbedEmbeddings   # ONNX-based embeddings (no PyTorch, much less RAM)
 from langchain_community.vectorstores import FAISS
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.output_parsers import StrOutputParser
@@ -15,7 +15,9 @@ from operator import add
 load_dotenv()
 
 
-embedding = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+# Same all-MiniLM-L6-v2 model as before (384-dim vectors), but run through ONNX Runtime via fastembed instead of
+# PyTorch + sentence-transformers. This cuts memory use by several hundred MB, which is what let the app run out of RAM on Render's 512Mi tier.
+embedding = FastEmbedEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
 
 retriever = None

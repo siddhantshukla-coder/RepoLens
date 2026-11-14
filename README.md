@@ -83,7 +83,7 @@ flowchart LR
 3. **Document.** The LLM writes a section per file from that analysis plus the source, then a project-level
    overview. If the LLM fails for a file, its raw analysis is kept so the document is never incomplete.
 4. **Index.** The documentation is chunked (1000 characters, 150 overlap), embedded with
-   `all-MiniLM-L6-v2`, and stored as a FAISS index on disk. Each chunk is prefixed with its file name.
+   `all-MiniLM-L6-v2` (run with FastEmbed on ONNX Runtime, so there is no PyTorch and memory use stays low), and stored as a FAISS index on disk. Each chunk is prefixed with its file name.
 5. **Chat.** Questions run through the Self-RAG graph below, searching only this repo's documentation.
 
 Analysis runs as a background job. The browser polls its progress, and the job is saved in the database.
@@ -160,7 +160,7 @@ after logging in again you land on the page you were last on.
 | Auth | JWT (PyJWT), bcrypt password hashing |
 | Persistence | SQLite (users, repos, jobs), FAISS indexes on disk |
 | LLM and agent | LangGraph, LangChain, Groq (`openai/gpt-oss-20b`) |
-| Retrieval | HuggingFace `all-MiniLM-L6-v2` embeddings, FAISS |
+| Retrieval | `all-MiniLM-L6-v2` embeddings via FastEmbed (ONNX Runtime, no PyTorch), FAISS |
 | Code analysis | Tree-sitter (`tree-sitter-language-pack`) |
 | Observability | LangSmith (optional) |
 | Frontend | React 18, Vite 5, plain CSS, `marked` + `DOMPurify` |
@@ -176,21 +176,24 @@ repolens/
 │   ├── repo_analyzer.py   GitHub fetching, Tree-sitter analysis, notebook conversion
 │   ├── doc_generator.py   LLM documentation writer, vector index builder/loader
 │   ├── rag_engine.py      the Self-RAG LangGraph
+│   ├── requirements.txt   Python dependencies
 │   ├── users.db           created on first run (users, repos, jobs)
 │   └── data/indexes/      one FAISS folder per analysed repo
 ├── frontend/
 │   ├── index.html
+│   ├── package.json
 │   ├── vite.config.js     dev server + /api proxy
 │   └── src/
+│       ├── main.jsx       React entry point
 │       ├── App.jsx        session + routing
 │       ├── router.js      tiny hash router
 │       ├── api.js         fetch wrapper + JWT handling
+│       ├── format.js      formatting helpers
 │       ├── styles.css, pages.css
 │       └── components/    AuthView, RepoView, ScanView, ReposPage, DocsPage,
 │                          ProfilePage, Workspace, DocPanel, ChatPanel, ...
-├── requirements.txt
 ├── env.example
-└── CHANGES.md             detailed change log
+└── README.md
 ```
 
 ## Getting started
@@ -209,7 +212,7 @@ cd repolens
 
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 ```
 
 Create `backend/.env` from the template and fill it in:
@@ -229,7 +232,7 @@ Start the server **from the project root** (the folder that contains `backend/`)
 uvicorn backend.main:app
 ```
 
-The first start downloads the embedding model, which takes a minute. Run **one** server process, not several workers.
+The first start downloads the small ONNX embedding model (around 90 MB), which takes a short while. Run **one** server process, not several workers.
 
 ### 2. Frontend
 
@@ -353,7 +356,5 @@ FastAPI also serves interactive docs at `/docs` while the server is running.
 <div align="center">
 
 Built with FastAPI, LangGraph, Tree-sitter, and React.
-
-See [`CHANGES.md`](CHANGES.md) for the full version history.
 
 </div>

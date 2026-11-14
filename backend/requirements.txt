@@ -15,11 +15,10 @@ requests               # GitHub API calls
 # ---- self-RAG (LangGraph / LangChain) ----------------------------------
 langgraph
 langchain-core
-langchain-community    # FAISS vector store wrapper
+langchain-community    # FAISS vector store wrapper + FastEmbed embeddings wrapper
 langchain-groq         # ChatGroq LLM
-langchain-huggingface  # HuggingFaceEmbeddings
+fastembed              # ONNX version of the all-MiniLM-L6-v2 embedding model (replaces sentence-transformers + torch)
 langchain-text-splitters
-sentence-transformers  # the all-MiniLM-L6-v2 embedding model
 faiss-cpu
 
 # ---- LangSmith tracing / observability ---------------------------------
